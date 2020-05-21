@@ -1,0 +1,23 @@
+name = lightyear
+description = 光年。
+core = 7.x
+
+scripts[] = js/jquery.min.js
+scripts[] = js/bootstrap.min.js
+scripts[] = js/perfect-scrollbar.min.js
+scripts[] = js/main.min.js
+scripts[] = js/Chart.js
+
+
+
+stylesheets[all][] = css/bootstrap.min.css
+stylesheets[all][] = css/style.min.css
+stylesheets[all][] = css/materialdesignicons.min.css
+
+regions[content] = Content
+regions[version_blocks] = 版本列表区块
+
+version = "7.x-1"
+core = "7.x"
+project = "lightyear"
+

@@ -1,0 +1,57 @@
+<?php
+  // 加载常用常量
+  module_load_include('inc', 'lightyear_base');
+
+  /**
+ * Implement hook_menu
+ */
+function lightyear_base_menu() {
+  $items = array();
+
+
+  $items['lightyear'] = array(
+    'title' => '首页',
+    'page callback' => 'lightyear_base_front_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.inc'
+  );
+  $items['aa'] = array(
+    'title' => '首页',
+    'page callback' => 'lightyear_base_aa_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.inc'
+  );
+
+ 
+
+  return $items;
+}
+
+
+
+/**
+ * Implement hook_theme
+ */
+function lightyear_base_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'lightyear_base');
+  $themes = array();
+  $themes['front'] = array(
+    'variables' => [],
+    'file' => 'themes/theme.inc',
+    'template' => 'themes/front'
+  );
+  $themes['aa'] = array(
+    'variables' => [],
+    'file' => 'themes/theme.inc',
+    'template' => 'themes/aa'
+  );
+
+  return $themes;
+}
+
+
+
+
+
