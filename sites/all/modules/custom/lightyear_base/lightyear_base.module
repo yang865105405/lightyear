@@ -10,25 +10,45 @@ function lightyear_base_menu() {
 
 
   $items['lightyear'] = array(
-    'title' => '首页',
+    'title' => '后台首页',
     'page callback' => 'lightyear_base_front_page',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.inc'
   );
   $items['aa'] = array(
-    'title' => '首页',
+    'title' => '测试页面',
     'page callback' => 'lightyear_base_aa_page',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.inc'
   );
+  $items['index'] = array(
+    'title' => '登录页面',
+    'page callback' => 'lightyear_base_index_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.inc'
+  );
 
- 
+  $items += _lightyear_base_ajax_wrapper();
+
+  return $items;
+  
+}
+
+function _lightyear_base_ajax_wrapper() {
+  $items = array();
+  $items['ajax/jiapu/user/log'] = array(
+    'title' => '首页登录',
+    'page callback' => 'lightyear_user_log',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.ajax.inc'
+  );
 
   return $items;
 }
-
 
 
 /**
@@ -47,6 +67,12 @@ function lightyear_base_theme($existing, $type, $theme, $path) {
     'file' => 'themes/theme.inc',
     'template' => 'themes/aa'
   );
+  $themes['index'] = array(
+    'variables' => [],
+    'file' => 'themes/theme.inc',
+    'template' => 'themes/index'
+  );
+
 
   return $themes;
 }
