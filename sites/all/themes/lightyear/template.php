@@ -76,6 +76,7 @@ function lightyear_preprocess_page(&$vars) {
   $pa = explode('/', current_path());
 
   $vars['is_lightyear_page'] = current(explode('/', current_path())) == 'lightyear';
+  $vars['is_user_page'] = current(explode('/', current_path())) == 'user';
 
   $vars['theme_path'] = $path;
 
