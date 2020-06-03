@@ -81,6 +81,16 @@
         url:"ajax/jiapu/user/log",
         type:'post',
         data:form_data,
+        success:function(data){
+          if(data.status=="success"){
+          
+            window.location.href="http://localhost/lightyear";
+          }
+          if(data.status=="fail"){
+            
+           alert("用户名或密码错误,请重新填写");
+          }
+        }
       });
       });
     });

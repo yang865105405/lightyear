@@ -8,14 +8,13 @@ function lightyear_user_log() {
 
     $name = $_REQUEST['username'];
     $pass = $_REQUEST['password'];
-    $result = db_query("SELECT * FROM users WHERE name = $name and pass=$pass")->fetchField();
-    // $select = db_select('users', 'user');
-    // if(isset($_REQUEST['username'])&&$_REQUEST['password']!="") {
-    //     $select->condition('user.name', "{$_REQUEST['username']}");
-    //     $select->condition('user.pass', "{$_REQUEST['password']}");
-    //   }
-    // $rowCount = $select->execute()->rowCount();  
-
+    $node_title = db_query('SELECT count(*) FROM {users} WHERE name = :name and pass = :pass', array(':name' => $name,':pass' => $pass))->fetchField();
+    if($node_title<1){
+        $response = array(
+            'status' => 'fail',
+            'message' => '登录失败'
+        );
+    }
     drupal_json_output($response);
     return;
 }
