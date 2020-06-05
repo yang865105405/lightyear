@@ -46,6 +46,13 @@ function _lightyear_base_ajax_wrapper() {
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.ajax.inc'
   );
+  $items['upload/photo'] = array(
+    'title' => '首页登录',
+    'page callback' => 'lightyear_upload_photo',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.ajax.inc'
+  );
 
   return $items;
 }

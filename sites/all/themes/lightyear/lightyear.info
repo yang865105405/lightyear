@@ -9,7 +9,6 @@ scripts[] = js/main.min.js
 scripts[] = js/Chart.js
 
 
-
 stylesheets[all][] = css/bootstrap.min.css
 stylesheets[all][] = css/style.min.css
 stylesheets[all][] = css/materialdesignicons.min.css
