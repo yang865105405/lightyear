@@ -23,22 +23,19 @@ function lightyear_upload_photo(){
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
-
     global $user;
-
-
-
     $response = array(
         'status' => 'fail',
         'message' => '失败'
     );
-
+    $deletestr = $_POST['delete'];
+    $obj = explode("|",$deletestr);
+    $obje = strlen($deletestr);
 
     foreach ($_FILES as $key => $value) {
-        if($key=='file'){
+        if($key=='File'){
             continue;
         }
-
         $upFile = $_FILES[$key];
         date_default_timezone_set('prc');
         $data=date('yymdhis',time());
