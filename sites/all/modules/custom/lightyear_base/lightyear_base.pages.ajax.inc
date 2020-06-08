@@ -28,9 +28,6 @@ function lightyear_upload_photo(){
         'status' => 'fail',
         'message' => '失败'
     );
-    $deletestr = $_POST['delete'];
-    $obj = explode("|",$deletestr);
-    $obje = strlen($deletestr);
 
     foreach ($_FILES as $key => $value) {
         if($key=='File'){

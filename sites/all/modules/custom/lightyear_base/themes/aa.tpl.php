@@ -19,25 +19,46 @@
 </div>
 
 <script type="text/javascript">
-
-function update() {
-　　var Fs=$("#FS")[0];
-　　for (var i=0; i<Fs.files.length; i++){
-		//id='"+Fs.files[i].name+"'
-   　　//window.URL.createObjectURL可以用于在浏览器上预览本地图片或者视频
-　　　　var div="<div id='"+i+"' style='float:left;margin-top: 15px' class='col-md-3'><button class='delete btn btn-danger col-md-3'  onclick='deleteimg("+ i +")'  >删除</button><img width='200px' height='200px' src='"+window.URL.createObjectURL(Fs.files[i])+"'/> </div>"
-　　　 $("#imgsuolue").after(div);
-    }
-}
 var formData = new FormData($('form')[0]);
-var deletearr = '';
+var deletearr = [];
+function update() {
+	var Fs=$("#FS")[0];
+	var fslegth = Fs.files.length;
+	var divlength = $(".canshu").length;
+	
+	if(divlength>0){
+		for (var i=0; i<fslegth; i++){
+			//id='"+Fs.files[i].name+"'
+			//window.URL.createObjectURL可以用于在浏览器上预览本地图片或者视频
+			var div="<div id='"+(i+divlength)+"' style='float:left;margin-top: 15px' class='col-md-3 canshu'><button class='delete btn btn-danger col-md-3'  onclick='deleteimg("+ (i+divlength) +")'  >删除</button><img width='200px' height='200px' src='"+window.URL.createObjectURL(Fs.files[i])+"'/> </div>"
+			$("#imgsuolue").after(div);
+			// console.log(i+divlength);
+			formData.set('file' + (i+divlength),$(':file')[0].files[i]);
+    	}	
+	}else{
+		for (var i=0; i<fslegth; i++){
+			var div="<div id='"+i+"' style='float:left;margin-top: 15px' class='col-md-3 canshu'><button class='delete btn btn-danger col-md-3'  onclick='deleteimg("+ i +")'  >删除</button><img width='200px' height='200px' src='"+window.URL.createObjectURL(Fs.files[i])+"'/> </div>"
+			$("#imgsuolue").after(div);
+			// console.log(i);
+			formData.set('file' + i,$(':file')[0].files[i]);
+    	}
+	}
+}
+
 $('#button').click(function(event) {
-	formData['deletefile'] = deletearr;
-　　//formdata储存异步上传数据
-	var lenght = $(':file')[0].files.length;
-	formData.append('delete',deletearr);
-	for (let i = 0; i < lenght; i++) {
-		formData.append('file' + i,$(':file')[0].files[i]);
+
+// 　　//formdata储存异步上传数据
+// 	var lenght = $(':file')[0].files.length;
+// 	//遍历所有的图片信息
+// 	for (let i = 0; i < lenght; i++) {
+// 		formData.set('file' + i,$(':file')[0].files[i]);
+		
+// 	}
+	//删除已经取消上传的图片信息
+	if(!deletearr.length==0){
+		for (let i = 0; i < deletearr.length; i++) {
+			formData.set('file' + deletearr[i],'');
+		}
 	}
 	 //坑点: 无论怎么传数据,console.log(formData)都会显示为空,但其实值是存在的,f12查看Net tab可以看到数据被上传了
 	 $.ajax({
@@ -48,7 +69,7 @@ $('#button').click(function(event) {
 	  contentType: false,
 	  processData: false,
 	  success:function(data){
-	  	// console.log(data);
+	  	console.log(data);
         // alert("上传成功");
         // window.location.href="http://localhost/lightyear";
 	  }
@@ -57,9 +78,9 @@ $('#button').click(function(event) {
 
 function deleteimg(i) {
 	//删除预览图
-	// console.log(i);
 	$("#"+i).remove();
-	deletearr =i + "|" + deletearr ;
+	
+	deletearr.push(i);
 	console.log(deletearr);
 	
 }
