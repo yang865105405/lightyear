@@ -24,10 +24,14 @@ function lightyear_upload_photo(){
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
     global $user;
+    $uid = $user->uid;
+    $timpstamp = time();
+
     $response = array(
-        'status' => 'fail',
-        'message' => '失败'
+        'status' => 'success',
+        'message' => '成功'
     );
+    // db_insert("file_managed")->fields(array('filename' => 'value1', 'field2' => 'value2', 'fieldn' => $valuen))->execute();
 
     foreach ($_FILES as $key => $value) {
         if($key=='File'){
@@ -35,8 +39,9 @@ function lightyear_upload_photo(){
         }
         $upFile = $_FILES[$key];
         date_default_timezone_set('prc');
-        $data=date('yymdhis',time());
+        $data=date('yymd',time());
         if($upFile['error']==0 && !empty($upFile)) {
+            $type = $upFile['type'];
             // $dirpath = creaDir('upload');
             //自定义的upload要创建好
             $dirpath = 'upload';
@@ -45,13 +50,14 @@ function lightyear_upload_photo(){
             $theme_path = drupal_get_path('theme', 'lightyear');
     
             $queryPath = $theme_path.'/'.$dirpath.'/'.$filename;
-    
-            if(move_uploaded_file($_FILES[$key]['tmp_name'],$queryPath)){
-                $response = array(
-                    'status' => 'success',
-                    'message' => '上传成功'
-                );
-            }
+            db_insert("file_managed")->fields(array('uid' => $uid,'filename' => $filename, 'uri' =>'http://192.168.0.213/upload/'. $filename,
+            'filemime' => $type, 'filesize' => 0, 'status' => 1, 'timestamp' => $timpstamp))->execute();
+            // if(move_uploaded_file($_FILES[$key]['tmp_name'],$queryPath)){
+            //     $response = array(
+            //         'status' => 'success',
+            //         'message' => '上传成功'
+            //     );
+            // }
         }
     }
     // function creaDir($dirPath){

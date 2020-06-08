@@ -61,8 +61,24 @@ $('#button').click(function(event) {
 		}
 	}
 	 //坑点: 无论怎么传数据,console.log(formData)都会显示为空,但其实值是存在的,f12查看Net tab可以看到数据被上传了
-	 $.ajax({
+	 var ajaxdrupal = $.ajax({
 	  url:'upload/photo',
+	  type: 'POST',
+	  data: formData,
+	  //这两个设置项必填
+	  contentType: false,
+	  processData: false,
+	  success:function(data){
+	  	console.log(data);
+        // alert("上传成功");
+        // window.location.href="http://localhost/lightyear";
+	  },
+	  error:function(){
+		  alert("上传失败,请查看图片信息是否重复");
+	  }
+	 })
+	 var ajaximg = $.ajax({
+	  url:'http://192.168.0.213/demo.php',
 	  type: 'POST',
 	  data: formData,
 	  //这两个设置项必填
@@ -74,6 +90,9 @@ $('#button').click(function(event) {
         // window.location.href="http://localhost/lightyear";
 	  }
 	 })
+	 $.when(ajaxdrupal,ajaximg).then(function(data1,data2){
+		 alert("图片信息保存成功");
+	 });
  });
 
 function deleteimg(i) {
