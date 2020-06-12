@@ -29,3 +29,10 @@ function lightyear_base_index_page() {
 
   return theme('index', array());
 }
+/**
+ * 编辑页面
+ */
+function lightyear_base_editpt_page() {
+
+  return theme('editpt', array());
+}

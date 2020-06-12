@@ -30,6 +30,14 @@ function lightyear_base_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.inc'
   );
+  $items['editpt'] = array(
+    'title' => '登录页面',
+    'page callback' => 'lightyear_base_editpt_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.inc'
+  );
+
 
   $items += _lightyear_base_ajax_wrapper();
 
@@ -79,6 +87,12 @@ function lightyear_base_theme($existing, $type, $theme, $path) {
     'file' => 'themes/theme.inc',
     'template' => 'themes/index'
   );
+  $themes['editpt'] = array(
+    'variables' => [],
+    'file' => 'themes/theme.inc',
+    'template' => 'themes/editpt'
+  );
+
 
 
   return $themes;

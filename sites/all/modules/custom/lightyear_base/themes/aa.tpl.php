@@ -3,13 +3,56 @@
     <button class="btn btn-danger">这是一个按钮 </button>
 </div> -->
 
-<form enctype="multipart/form-data" id="upForm">
-	<div class="row" style="margin-left: 15px;">
+<form enctype="multipart/form-data" id="upForm" class="form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-2 control-label">图片名称</label>
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-md-8">
+					<input id="title_id" type="text" name="title" class="form-control" placeholder="图片名称">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">说明</label>
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-md-8">
+					<input id="body_id" type="text" name="body" class="form-control" placeholder="说明">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">具体描述</label>
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-md-8">
+					<input id="miaoshu_id" type="text" name="pt_description" class="form-control" placeholder="具体描述">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">上传</label>
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-md-8">
+				<a href="javascript:;" class="file">
+					选择图片
+					<input name="File" onchange="update()" accept="image/png,image/gif,image/jpg,image/jpeg" id="FS" type="file" multiple>
+				</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="row" style="margin-left: 15px;">
 		<a href="javascript:;" class="file">
 			选择图片
 			<input name="File" onchange="update()" accept="image/png,image/gif,image/jpg,image/jpeg" id="FS" type="file" multiple>
 		</a>
-	</div>
+	</div> -->
 </form>	
 <div id="imgsuolue" class="col-md-12" style="margin-top: 30px;">
 </div>
@@ -46,7 +89,12 @@ function update() {
 }
 
 $('#button').click(function(event) {
-
+	var titleval = $("#title_id").val();
+	var bodyval = $("#body_id").val();
+	var miaoshu = $("#miaoshu_id").val();
+	formData.append("title", titleval);
+	formData.append("body", bodyval);
+	formData.append("pt_description", miaoshu);
 // 　　//formdata储存异步上传数据
 // 	var lenght = $(':file')[0].files.length;
 // 	//遍历所有的图片信息

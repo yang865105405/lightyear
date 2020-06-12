@@ -23,34 +23,62 @@ function lightyear_upload_photo(){
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
-    global $user;
-    $uid = $user->uid;
-    $timpstamp = time();
-
     $response = array(
         'status' => 'success',
         'message' => '成功'
     );
-    // db_insert("file_managed")->fields(array('filename' => 'value1', 'field2' => 'value2', 'fieldn' => $valuen))->execute();
+    global $user;
+    //获取uid的值
+    $uid = $user->uid;
+    //时间戳
+    $timpstamp = time();
+    //获取前台传递的值
+    $data = $_POST;
+    $title = $data['title'];
+    $body = $data['body'];
+    $node = NULL;
+    if((int)$nid <= 0 || empty($node)) {
+        $node = new stdClass();
+        $node->title = $title;
+        $node->type = "node_lightyear_photo";
+        node_object_prepare($node);
+        $node->language = LANGUAGE_NONE;
+        $node->uid = $user->uid;
+        $node->status = 1;
+        $node->promote = 0;
+        $node->comment = 0;
+    }
+    $node_wrapper = entity_metadata_wrapper('node', $node);
+    foreach($data as $field => $d) {
+        if($field == 'body') continue;
+        if($field == 'title') continue;
+        if($domain = strstr($field, 'file')) continue;
+        $filed_name = 'field_lightyear_' . $field;
+        $node_wrapper->$filed_name->set($d);
+    }
+   
+    $node_wrapper->body->set(array('value' => $body));
+    $node_wrapper->save();
 
+    // db_insert("file_managed")->fields(array('filename' => 'value1', 'field2' => 'value2', 'fieldn' => $valuen))->execute();
     foreach ($_FILES as $key => $value) {
         if($key=='File'){
             continue;
         }
         $upFile = $_FILES[$key];
         date_default_timezone_set('prc');
-        $data=date('yymd',time());
+        $date=date('yymd',time());
         if($upFile['error']==0 && !empty($upFile)) {
             $type = $upFile['type'];
             // $dirpath = creaDir('upload');
             //自定义的upload要创建好
             $dirpath = 'upload';
-            $filename =$data .'_'.$_FILES[$key]['name'];
+            $filename =$date .'_'.$_FILES[$key]['name'];
     
             $theme_path = drupal_get_path('theme', 'lightyear');
     
             $queryPath = $theme_path.'/'.$dirpath.'/'.$filename;
-            db_insert("file_managed")->fields(array('uid' => $uid,'filename' => $filename, 'uri' =>'http://192.168.0.213/upload/'. $filename,
+            $xinxix = db_insert("file_managed")->fields(array('uid' => $uid,'filename' => $filename, 'uri' =>'http://192.168.0.213/upload/'. $filename,
             'filemime' => $type, 'filesize' => 0, 'status' => 1, 'timestamp' => $timpstamp))->execute();
             // if(move_uploaded_file($_FILES[$key]['tmp_name'],$queryPath)){
             //     $response = array(
@@ -68,6 +96,6 @@ function lightyear_upload_photo(){
     //  }
     // }
 
-    drupal_json_output($response);
+    echo json_encode($response);
     return;
 }
