@@ -58,29 +58,33 @@ function lightyear_upload_photo(){
     }
    
     $node_wrapper->body->set(array('value' => $body));
-    $node_wrapper->save();
+    $valuenid = $node_wrapper->save();
 
-    // db_insert("file_managed")->fields(array('filename' => 'value1', 'field2' => 'value2', 'fieldn' => $valuen))->execute();
-    foreach ($_FILES as $key => $value) {
-        if($key=='File'){
-            continue;
-        }
-        $upFile = $_FILES[$key];
+    $namearr = $_FILES['myFile']['name'];
+    $typearr = $_FILES['myFile']['type'];
+    $tmpnamearr = $_FILES['myFile']['tmp_name'];
+    $sizearr = $_FILES['myFile']['size'];
+    $errorarr = $_FILES['myFile']['error'];
+    
+    foreach ($namearr as $key => $value) {
+        $filename = $value;
+        $type = $_FILES['myFile']['type'];
+        $tmpname = $tmpnamearr[$key];
+        $error = $errorarr[$key];
+        $upFile = $_FILES['myFile'];
+
         date_default_timezone_set('prc');
         $date=date('yymd',time());
-        if($upFile['error']==0 && !empty($upFile)) {
-            $type = $upFile['type'];
-            // $dirpath = creaDir('upload');
-            //自定义的upload要创建好
+        if($error==0 && !empty($upFile)) {
             $dirpath = 'upload';
-            $filename =$date .'_'.$_FILES[$key]['name'];
+            $newfilename =$date .'_'.$filename;
     
             $theme_path = drupal_get_path('theme', 'lightyear');
     
-            $queryPath = $theme_path.'/'.$dirpath.'/'.$filename;
-            $xinxix = db_insert("file_managed")->fields(array('uid' => $uid,'filename' => $filename, 'uri' =>'http://192.168.0.213/upload/'. $filename,
-            'filemime' => $type, 'filesize' => 0, 'status' => 1, 'timestamp' => $timpstamp))->execute();
-            // if(move_uploaded_file($_FILES[$key]['tmp_name'],$queryPath)){
+            $queryPath = $theme_path.'/'.$dirpath.'/'.$newfilename;
+            $xinxix = db_insert("file_managed")->fields(array('uid' => $uid,'filename' => $newfilename, 'uri' =>'http://192.168.0.213/upload/'. $newfilename,
+            'filemime' =>  $type[$key], 'filesize' => 0, 'status' => 1, 'timestamp' => $timpstamp))->execute();
+            // if(move_uploaded_file($tmpname,$queryPath)){
             //     $response = array(
             //         'status' => 'success',
             //         'message' => '上传成功'
