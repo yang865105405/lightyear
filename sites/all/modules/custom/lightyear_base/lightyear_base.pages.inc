@@ -32,7 +32,15 @@ function lightyear_base_index_page() {
 /**
  * 编辑页面
  */
-function lightyear_base_editpt_page() {
+function lightyear_base_editpt_page($node) {
 
-  return theme('editpt', array());
+  $node_wrapper = entity_metadata_wrapper('node', $node);
+  return theme('editpt', array('node_wrapper' => $node_wrapper));
+}
+/**
+ * 管理页面
+ */
+function lightyear_base_ptmanage_page() {
+  
+  return theme('ptmanage', array());
 }

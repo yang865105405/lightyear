@@ -26,16 +26,16 @@
 			</div>
 		</div>
 	</div>
-	<div class="form-group">
+	<!-- <div class="form-group">
 		<label class="col-sm-2 control-label">图片信息</label>
 		<div class="col-sm-10">
 			<div class="row">
 				<div class="col-md-8">
-					<input type="text" name="photo" id="photo" class="form-control" placeholder="photo">
+					<input type="text" name="file" id="photo" class="form-control" placeholder="photo">
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="hr-line-dashed"></div>
 	<div class="main">
 		<div class="upload-content">
@@ -143,8 +143,23 @@ $('#btn-submit-upload').on('click', function() {
 	var photo = $("#photo").val();
 	formFile.append('title',title);
 	formFile.append('body',body);
-	formFile.append('photo',photo);
-    $.ajax({
+	// formFile.append('photo',photo);
+    var ajaxurl = $.ajax({
+            url: 'http://192.168.0.213/demo.php',
+            type: 'POST',
+            data: formFile,
+            //这两个设置项必填
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+                // alert("上传成功");
+            },
+            error: function() {
+                alert("图片保存失败");
+            }
+        })
+        var ajaximg =  $.ajax({
             url: 'upload/photo',
             type: 'POST',
             data: formFile,
@@ -154,12 +169,14 @@ $('#btn-submit-upload').on('click', function() {
             success: function(data) {
                 console.log(data);
                 // alert("上传成功");
-                // window.location.href="http://localhost/lightyear";
             },
             error: function() {
-                alert("上传失败,请查看图片信息是否重复");
+                alert("图片信息保存失败");
             }
         })
+        $.when(ajaxurl,ajaximg).then(function(data1,data2){
+		    alert("图片信息保存成功");
+	    });
 
 });
 

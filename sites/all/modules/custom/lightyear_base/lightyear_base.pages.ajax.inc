@@ -58,48 +58,123 @@ function lightyear_upload_photo(){
     }
    
     $node_wrapper->body->set(array('value' => $body));
-    $valuenid = $node_wrapper->save();
 
     $namearr = $_FILES['myFile']['name'];
     $typearr = $_FILES['myFile']['type'];
     $tmpnamearr = $_FILES['myFile']['tmp_name'];
     $sizearr = $_FILES['myFile']['size'];
     $errorarr = $_FILES['myFile']['error'];
-    
+    $files = array();
     foreach ($namearr as $key => $value) {
-        $filename = $value;
-        $type = $_FILES['myFile']['type'];
-        $tmpname = $tmpnamearr[$key];
-        $error = $errorarr[$key];
-        $upFile = $_FILES['myFile'];
-
-        date_default_timezone_set('prc');
-        $date=date('yymd',time());
-        if($error==0 && !empty($upFile)) {
-            $dirpath = 'upload';
-            $newfilename =$date .'_'.$filename;
-    
-            $theme_path = drupal_get_path('theme', 'lightyear');
-    
-            $queryPath = $theme_path.'/'.$dirpath.'/'.$newfilename;
-            $xinxix = db_insert("file_managed")->fields(array('uid' => $uid,'filename' => $newfilename, 'uri' =>'http://192.168.0.213/upload/'. $newfilename,
-            'filemime' =>  $type[$key], 'filesize' => 0, 'status' => 1, 'timestamp' => $timpstamp))->execute();
-            // if(move_uploaded_file($tmpname,$queryPath)){
-            //     $response = array(
-            //         'status' => 'success',
-            //         'message' => '上传成功'
-            //     );
-            // }
+        if(!empty($namearr)){
+            $upload_file = array(
+                'name' =>  $value,
+                'type' => $typearr[$key],
+                'tmp_name' => $tmpnamearr[$key],
+                'error' => $errorarr[$key],
+                'size' => $sizearr[$key]
+              );
+            $path_uri = 'private://lightyear/photos';
+            $new_file = jiapu_save_upload_file($upload_file, $path_uri);
+            $files[] = (array)$new_file;
         }
     }
-    // function creaDir($dirPath){
-    //  $curPath = dirname(__FILE__);
-    //  $path = $curPath.'\\'.$dirPath;
-    //  if (is_dir($path) || mkdir($path,0777,true)) {
-    //   return $dirPath;
-    //  }
-    // }
+    $node_wrapper->field_lightyear_photo->set($files);
+    $node_wrapper->save();
 
     echo json_encode($response);
     return;
 }
+
+function lightyear_edit_photo(){
+    header('Access-Control-Max-Age: 3600');
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+    header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
+    $response = array(
+        'status' => 'success',
+        'message' => '成功'
+    );
+    global $user;
+    //获取uid的值
+    $uid = $user->uid;
+    //时间戳
+    $timpstamp = time();
+    //获取前台传递的值
+    $data = $_POST;
+    $title = $data['title'];
+    $body = $data['body'];
+    $node = NULL;
+    if((int)$nid <= 0 || empty($node)) {
+        $node = new stdClass();
+        $node->title = $title;
+        $node->type = "node_lightyear_photo";
+        node_object_prepare($node);
+        $node->language = LANGUAGE_NONE;
+        $node->uid = $user->uid;
+        $node->status = 1;
+        $node->promote = 0;
+        $node->comment = 0;
+    }
+    $node_wrapper = entity_metadata_wrapper('node', $node);
+    foreach($data as $field => $d) {
+        if($field == 'body') continue;
+        if($field == 'title') continue;
+        if($domain = strstr($field, 'file')) continue;
+        $filed_name = 'field_lightyear_' . $field;
+        $node_wrapper->$filed_name->set($d);
+    }
+   
+    $node_wrapper->body->set(array('value' => $body));
+
+    $namearr = $_FILES['myFile']['name'];
+    $typearr = $_FILES['myFile']['type'];
+    $tmpnamearr = $_FILES['myFile']['tmp_name'];
+    $sizearr = $_FILES['myFile']['size'];
+    $errorarr = $_FILES['myFile']['error'];
+    $files = array();
+    foreach ($namearr as $key => $value) {
+        if(!empty($namearr)){
+            $upload_file = array(
+                'name' =>  $value,
+                'type' => $typearr[$key],
+                'tmp_name' => $tmpnamearr[$key],
+                'error' => $errorarr[$key],
+                'size' => $sizearr[$key]
+              );
+            $path_uri = 'private://lightyear/photos';
+            $new_file = jiapu_save_upload_file($upload_file, $path_uri);
+            $files[] = (array)$new_file;
+        }
+    }
+    $node_wrapper->field_lightyear_photo->set($files);
+    $node_wrapper->save();
+
+    echo json_encode($response);
+    return;
+}
+
+
+function jiapu_save_upload_file($file_element, $path_uri) {
+    global $user;
+    // 保存文件
+    file_prepare_directory($path_uri, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);//如果文件夹不存在则创建
+    $path = drupal_realpath($path_uri);
+    if (!is_dir($path)) {
+      mkdir($path, 0, true);
+    }
+    $dest_file_name = date('Ymd') .'_'. $file_element['name'];
+    // move_uploaded_file($file_element['tmp_name'], $path . '/' . $dest_file_name);
+  
+    $file = new stdClass();
+    $file->uid = $user->uid;
+    $file->filename = $file_element['name'];
+    $file->uri = $path_uri . '/' . $dest_file_name;
+    $file->filemime = $file_element['type'];
+    $file->filesize = $file_element['size'];
+    $file->status = 1;
+    $file->display = 1;
+    file_save($file);
+  
+    return $file;
+  }

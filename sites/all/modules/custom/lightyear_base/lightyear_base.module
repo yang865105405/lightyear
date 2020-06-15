@@ -30,13 +30,22 @@ function lightyear_base_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.inc'
   );
-  $items['editpt'] = array(
+  $items['editpt/%node'] = array(
     'title' => '登录页面',
     'page callback' => 'lightyear_base_editpt_page',
+    'page arguments' => array(1),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.inc'
   );
+  $items['ptmanage'] = array(
+    'title' => '登录页面',
+    'page callback' => 'lightyear_base_ptmanage_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.inc'
+  );
+
 
 
   $items += _lightyear_base_ajax_wrapper();
@@ -55,8 +64,15 @@ function _lightyear_base_ajax_wrapper() {
     'file' => 'lightyear_base.pages.ajax.inc'
   );
   $items['upload/photo'] = array(
-    'title' => '首页登录',
+    'title' => '上传图片',
     'page callback' => 'lightyear_upload_photo',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.ajax.inc'
+  );
+  $items['edit/photo'] = array(
+    'title' => '编辑图片',
+    'page callback' => 'lightyear_edit_photo',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.ajax.inc'
@@ -92,7 +108,11 @@ function lightyear_base_theme($existing, $type, $theme, $path) {
     'file' => 'themes/theme.inc',
     'template' => 'themes/editpt'
   );
-
+  $themes['ptmanage'] = array(
+    'variables' => [],
+    'file' => 'themes/theme.inc',
+    'template' => 'themes/ptmanage'
+  );
 
 
   return $themes;
