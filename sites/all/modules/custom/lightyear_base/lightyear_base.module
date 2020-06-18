@@ -31,7 +31,7 @@ function lightyear_base_menu() {
     'file' => 'lightyear_base.pages.inc'
   );
   $items['editpt/%node'] = array(
-    'title' => '登录页面',
+    'title' => '编辑',
     'page callback' => 'lightyear_base_editpt_page',
     'page arguments' => array(1),
     'access callback' => TRUE,
@@ -39,7 +39,7 @@ function lightyear_base_menu() {
     'file' => 'lightyear_base.pages.inc'
   );
   $items['ptmanage'] = array(
-    'title' => '登录页面',
+    'title' => '管理',
     'page callback' => 'lightyear_base_ptmanage_page',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
@@ -70,9 +70,17 @@ function _lightyear_base_ajax_wrapper() {
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.ajax.inc'
   );
-  $items['edit/photo'] = array(
+  $items['editpt/edit/photo/%node'] = array(
     'title' => '编辑图片',
     'page callback' => 'lightyear_edit_photo',
+    'page arguments' => array(3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'lightyear_base.pages.ajax.inc'
+  );
+  $items['delete/photo'] = array(
+    'title' => '删除',
+    'page callback' => 'lightyear_delete_photo',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'lightyear_base.pages.ajax.inc'

@@ -37,29 +37,46 @@
 		</div>
 	</div> -->
 	<div class="hr-line-dashed"></div>
-	<div class="main">
-		<div class="upload-content">
-			<!-- <h3>上传图片</h3> -->
-			<div class="content-img">
-				<ul class="content-img-list"></ul>
-				<div class="file">
-					<i class="gcl gcladd"></i>
-					<input type="file" name="file" accept="image/png,image/gif,image/jpg,image/jpeg" id="upload" multiple>
-				</div>
-			</div>
-			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>
+    <div  class="form-group">
+        <label class="col-sm-2 control-label">图片</label>
+        <div class="col-sm-10">
+            <div class="row">
+				<div class="col-md-9">
 
-    <div>
-        <button class="btn btn-info col-md-2" id="btn-submit-upload" style="margin-top: 20px;">上传</button>
+                    <div class="main">
+                        <div class="upload-content">
+                            <!-- <h3>上传图片</h3> -->
+                            <div class="content-img">
+                                <ul class="content-img-list"></ul>
+                                <div class="file">
+                                    <i class="gcl gcladd"></i>
+                                    <input type="file" name="file" accept="image/png,image/gif,image/jpg,image/jpeg" id="upload" multiple>
+                                </div>
+                            </div>
+                            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>   
+</form>
+    <div class="form-group form_actions">
+        <div class="col-sm-4 col-sm-offset-2">
+            <button type="button"class="btn btn-info col-md-4" id="btn-submit-upload">提交</button>
+            <!-- <button type="button" class="btn btn-primary" id="temp_storage">暂存</button> -->
+        </div>
     </div>
+
+    <!-- <div>
+        <button class="btn btn-info col-md-4" id="btn-submit-upload" style="margin-top: 20px;">上传</button>
+    </div> -->
     <link rel="stylesheet" href="https://at.alicdn.com/t/font_1805932_ysrcp4y0uy9.css">
 <script type="text/javascript">
 var imgFile = []; //文件流
@@ -89,14 +106,14 @@ $(function() {
 
 
     $(".content-img-list").on("click", '.content-img-list-item a .gclfangda', function() {
-        var index = $(this).parent().parent().parent().index();
-        $(".modal-content").html("");
+        // var index = $(this).parent().parent().parent().index();
+        // $(".modal-content").html("");
 
-        var bigimg = $(".modal-content").html();
-        $(".modal-content").html(bigimg + '<div class="show"><img src="' + imgSrc[index] + '" alt=""><div>');
-        // $(".modal-content").append(
-        //     '<div class="show"><img src="' + imgSrc[a] + '" alt=""><div>'
-        // );
+        // var bigimg = $(".modal-content").html();
+        // $(".modal-content").html(bigimg + '<div class="show"><img src="' + imgSrc[index] + '" alt=""><div>');
+        // // $(".modal-content").append(
+        // //     '<div class="show"><img src="' + imgSrc[a] + '" alt=""><div>'
+        // // );
 
 
 
@@ -107,9 +124,9 @@ $(function() {
 //图片上传
 $('#upload').on('change', function(e) {
     var imgSize = this.files[0].size;
-    if (imgSize > 1024 * 500 * 1) { //1M
-        return alert("上传图片不能超过500KB");
-    };
+    // if (imgSize > 1024 * 500 * 1) { //1M
+    //     return alert("上传图片不能超过500KB");
+    // };
     if (this.files[0].type != 'image/png' && this.files[0].type != 'image/jpeg' && this.files[0].type != 'image/gif') {
         return alert("图片上传格式不正确");
     }
@@ -197,7 +214,7 @@ function addNewContent(obj) {
         var oldBox = $(obj).html();
         $(obj).html(oldBox + '<li class="content-img-list-item"><img src="' + imgSrc[a] + '" alt="">' +
             '<div class="hide"><a index="' + a + '" class="delete-btn"><i class="gcl gcllajitong"></i></a>' +
-            '<a index="' + a + '" class="big-btn" type="button" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="gcl gclfangda"></i></a></div></li>');
+            '</div></li>');
     }
 }
 

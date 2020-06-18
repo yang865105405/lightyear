@@ -15,6 +15,8 @@ function template_preprocess_index(&$vars) {
    $vars['theme_path'] =$theme_path;
 }
 function template_preprocess_editpt(&$vars) {
+   $theme_path = drupal_get_path('theme', 'lightyear');
+   $vars['theme_path'] =$theme_path;
    // $nodenid = $vars['node_wrapper'] ;
    //获取nid
    $data =  $_GET;
@@ -35,17 +37,22 @@ function template_preprocess_editpt(&$vars) {
    $bb=$select->__toString();
    $resultbody = $select->execute()->fetchAll();
    $body = $resultbody[0]->value;
+   $vars['body'] =$body;
+
    $resultarr = array();
+   $imgnamearr = array();
    foreach ($result as $k => $v) {
       $nidval=$v->uri;
       $nidval = substr($nidval,strpos($nidval, 'photo'));
       $new_str = "http://192.168.0.213/" . $nidval;
+      $img_name = substr($nidval,strpos($nidval, 'photo')+16);
       array_push($resultarr,$new_str);
+      array_push($imgnamearr,$img_name);
    }
    $vars['resultarr']= $resultarr;
-   $theme_path = drupal_get_path('theme', 'lightyear');
-   $vars['theme_path'] =$theme_path;
-   $vars['body'] =$body;
+   $vars['imgnamearr']= $imgnamearr;
+
+
    
 }
 
