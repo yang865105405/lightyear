@@ -23,7 +23,7 @@
             processData: false,
             success: function(data) {
                 console.log(data);
-                // alert("上传成功");
+                window.location.reload();
             },
             error: function() {
                 alert("图片保存失败");

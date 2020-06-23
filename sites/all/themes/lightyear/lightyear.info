@@ -12,6 +12,8 @@ scripts[] = js/Chart.js
 stylesheets[all][] = css/bootstrap.min.css
 stylesheets[all][] = css/style.min.css
 stylesheets[all][] = css/materialdesignicons.min.css
+stylesheets[all][] = css/upload-img.css
+stylesheets[all][] = css/uploadImg.css
 
 regions[content] = Content
 regions[version_blocks] = 版本列表区块
